@@ -97,8 +97,8 @@ VOID CGuiRenderer::RenderBuffer(const PlaneSnapShot *pSnapShot, CTexture *pTextu
 		fPoint[2] = (FLOAT)pSnapShot->rtRect.right;
 		fPoint[3] = (FLOAT)pSnapShot->rtRect.bottom;
 
-		fDelta[0] = fPoint[0] + ( fPoint[2] - fPoint[0] ) / 2; // xÃà
-		fDelta[1] = fPoint[1] + ( fPoint[3] - fPoint[1] ) / 2;  // yÃà
+		fDelta[0] = fPoint[0] + ( fPoint[2] - fPoint[0] ) / 2; // xï¿½ï¿½
+		fDelta[1] = fPoint[1] + ( fPoint[3] - fPoint[1] ) / 2;  // yï¿½ï¿½
 
 		fPoint[0] -= fDelta[0];
 		fPoint[1] -= fDelta[1];
@@ -114,7 +114,7 @@ VOID CGuiRenderer::RenderBuffer(const PlaneSnapShot *pSnapShot, CTexture *pTextu
 		fVertex[6] = fPoint[2] * fCosTheta + fPoint[3] * fSinTheta + fDelta[0];
 		fVertex[7] = fPoint[3] * fCosTheta - fPoint[2] * fSinTheta + fDelta[1];
 
-		// È¸Àü
+		// È¸ï¿½ï¿½
 		RwIm2DVertexSetScreenX(&m_2dVertices[0], fVertex[0] + fOffset);
 		RwIm2DVertexSetScreenY(&m_2dVertices[0], fVertex[1] + fOffset);
 
@@ -153,7 +153,7 @@ VOID CGuiRenderer::RenderBuffer(const PlaneSnapShot *pSnapShot, CTexture *pTextu
 		RwIm2DVertexSetIntRGBA(&m_2dVertices[i], pSnapShot->uRed, pSnapShot->uGreen, pSnapShot->uBlue, pSnapShot->uAlpha);
 	}
 	
-	if(pTexture)
+	if(pTexture && pTexture->IsValid())
 	{
 		RwD3D9SetTexture(pTexture->GetTexture(), 0);
 	}
@@ -202,7 +202,7 @@ VOID CGuiRenderer::RenderBuffer( const TriSnapShot* pSnapShot, CTexture* pTextur
 		RwIm2DVertexSetIntRGBA(&m_2dVertices[i], pSnapShot->uRed, pSnapShot->uGreen, pSnapShot->uBlue, pSnapShot->uAlpha);
 	}
 
-	if(pTexture)
+	if(pTexture && pTexture->IsValid())
 	{
 		RwD3D9SetTexture(pTexture->GetTexture(), 0);
 	}
@@ -231,7 +231,7 @@ VOID CGuiRenderer::RenderQueue(const PlaneSnapShot *pSnapShot, CTexture *pTextur
 {
 	NTL_SPROFILE("CGuiRenderer::RenderQueue")
 
-	// Clipping ¿µ¿ª °è»ê.
+	// Clipping ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½.
 	PlaneSnapShot planeClipped = *pSnapShot;
 
 	if( pClippingRect )
@@ -263,7 +263,7 @@ VOID CGuiRenderer::RenderQueue(const PlaneSnapShot *pSnapShot, CTexture *pTextur
 		if( planeClipped.rtRect.right - planeClipped.rtRect.left <= 0 || planeClipped.rtRect.bottom - planeClipped.rtRect.top <= 0 )
 			return;
 	}	
-	// Clipping ¿µ¿ª °è»ê ³¡.
+	// Clipping ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½.
 
 	if(bRenderTop)
 	{
