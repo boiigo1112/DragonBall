@@ -70,6 +70,7 @@ RwBool CDboEventHandler::Create(void)
 	RegisterMsg(g_EventDebug_for_Developer, "g_EventDebug_for_DeveloperStr", "g_EventDebug_for_Developer");
 	RegisterMsg(g_EventLobbyPacketHelper, "g_EventLobbyPacketHelperStr", "g_EventLobbyPacketHelper");
 	RegisterMsg(g_EventLoginGuiEnable, "g_EventLoginGuiEnableStr", "SDboEventLoginGuiEnable");
+	RegisterMsg(g_EventVirtualKeyboard, "g_EventVirtualKeyboardStr", "SDboEventKeyboard");
 	RegisterMsg(g_EventCharSelectGuiEnable, "g_EventCharSelectGuiEnableStr", "SDboEventCharSelectGuiEnable");
     RegisterMsg(g_EventMsgBoxShow, "g_EventMsgBoxShowStr", "SDboEventMsgBoxShow");
 	RegisterMsg(g_EventMsgBoxResult, "g_EventMsgBoxResultStr", "SDboEventMsgBoxResult");
@@ -192,7 +193,7 @@ RwBool CDboEventHandler::Create(void)
     RegisterMsg(g_EventOpenBagGui, "g_EventOpenBagGui", NULL);
     RegisterMsg(g_EventOpenScouterBackgroundGui, "g_EventOpenScouterBackgroundGui", NULL);
 
-    // ÇÑ±¹ PC¹æ °ü·Ã
+    // ï¿½Ñ±ï¿½ PCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     RegisterMsg(g_EventUpdateNetPy, "g_EventUpdateNetPy", "SDboEventUpdateNetPy");
     RegisterMsg(g_EventNetMarbleMemberShipNfy, "g_EventNetMarbleMemberShipNfy", NULL);
 	RegisterMsg(g_EventNetPyShopEvent, "g_EventNetPyShopEvent", "SDboNetPyShopEvent" );
@@ -273,6 +274,7 @@ void CDboEventHandler::Destroy(void)
 	UnRegisterMsg(g_EventDebug_for_Developer);
 	UnRegisterMsg(g_EventLobbyPacketHelper);
 	UnRegisterMsg(g_EventLoginGuiEnable);
+	UnRegisterMsg(g_EventVirtualKeyboard);
 	UnRegisterMsg(g_EventCharSelectGuiEnable);
 	UnRegisterMsg(g_EventMsgBoxShow);
 	UnRegisterMsg(g_EventMsgBoxResult);
@@ -395,7 +397,7 @@ void CDboEventHandler::Destroy(void)
 	UnRegisterMsg(g_EventOpenBagGui);
 	UnRegisterMsg(g_EventOpenScouterBackgroundGui);
 
-	// ÇÑ±¹ PC¹æ °ü·Ã
+	// ï¿½Ñ±ï¿½ PCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UnRegisterMsg(g_EventUpdateNetPy);
 	UnRegisterMsg(g_EventNetMarbleMemberShipNfy);
 	UnRegisterMsg(g_EventNetPyShopEvent);
@@ -523,7 +525,7 @@ void CDboEventHandler::HandleEvents(RWS::CMsg &pMsg)
 
 				if( pActor->GetSerialID() == pCtrlStuff->sRide.hTargetSerialId )
 				{
-					// ³»°¡ Å¸°í ÀÖ´Â ¹ö½ºÀÌ´Ù
+					// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½
 					//const WCHAR* pwcText = GetDisplayStringManager()->GetString("DST_BUS_ASK_GET_OFF");
 					//CDboEventGenerator::MsgBoxShow(pwcText, MBW_GET_OFF_BUS_ASK, MBTF_OK | MBTF_CANCEL);
 					GetAlarmManager()->AlarmMessage( "DST_BUS_ASK_GET_OFF" );

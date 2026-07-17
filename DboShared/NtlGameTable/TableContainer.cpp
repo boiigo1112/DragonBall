@@ -4,7 +4,7 @@
 //
 //	Begin		:	2007-01-31
 //
-//	Copyright	:	¨Ï NTL-Inc Co., Ltd
+//	Copyright	:	ï¿½ï¿½ NTL-Inc Co., Ltd
 //
 //	Author		:	
 //
@@ -120,6 +120,24 @@
 #include "MobServerTable.h"
 #include "EventSystemTable.h"
 #include "DynamicFieldSystemTable.h"
+
+// V2 port (Game Data Tables)
+#include "BasicDropTable.h"
+#include "ClassTable.h"
+#include "ContentsConditionTable.h"
+#include "EachDropTable.h"
+#include "EventTimeTable.h"
+#include "ExcellentDropTable.h"
+#include "GameManiaTimeTable.h"
+#include "ItemEnchantRateTable.h"
+#include "ItemOptionValueProbabilityTable.h"
+#include "ItemUpgradeRateTable.h"
+#include "LegendaryDropTable.h"
+#include "NormalDropTable.h"
+#include "RaceTable.h"
+#include "SuperiorDropTable.h"
+#include "TextServerTable.h"
+#include "TypeDropTable.h"
 
 
 
@@ -318,6 +336,24 @@ void CTableContainer::Init()
 	m_pMobServerTable = NULL;
 	m_pEventSystemTable = NULL;
 	m_pDynamicFieldSystemTable = NULL;
+
+	// V2 port (Game Data Tables)
+	m_pBasicDropTable = NULL;
+	m_pClassTable = NULL;
+	m_pContentsConditionTable = NULL;
+	m_pEachDropTable = NULL;
+	m_pEventTimeTable = NULL;
+	m_pExcellentDropTable = NULL;
+	m_pGameManiaTimeTable = NULL;
+	m_pItemEnchantRateTable = NULL;
+	m_pItemOptionValueProbabilityTable = NULL;
+	m_pItemUpgradeRateTable = NULL;
+	m_pLegendaryDropTable = NULL;
+	m_pNormalDropTable = NULL;
+	m_pRaceTable = NULL;
+	m_pSuperiorDropTable = NULL;
+	m_pTextServerTable = NULL;
+	m_pTypeDropTable = NULL;
 
 	m_pItemOptionTable = NULL;
 	m_pItemTable = NULL;
@@ -556,6 +592,72 @@ bool CTableContainer::Create(CNtlBitFlagManager& rTableFlag, WCHAR* pwszPath, CT
 	if (false != rTableFlag.IsSet(TABLE_DYNAMIC_FIELD_SYSTEM))
 	{
 		DBO_CREATE_TABLE(CDynamicFieldSystemTable, serializer, pFileNameList->GetFileNameW(TABLE_DYNAMIC_FIELD_SYSTEM), m_pDynamicFieldSystemTable, pCall);
+	}
+
+	// V2 port (Game Data Tables) â€” registered by GameServer only
+	if (false != rTableFlag.IsSet(TABLE_DROP_BASIC))
+	{
+		DBO_CREATE_TABLE(CBasicDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_BASIC), m_pBasicDropTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_CLASS))
+	{
+		DBO_CREATE_TABLE(CClassTable, serializer, pFileNameList->GetFileNameW(TABLE_CLASS), m_pClassTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_CONTENTS_CONDITION))
+	{
+		DBO_CREATE_TABLE(CContentsConditionTable, serializer, pFileNameList->GetFileNameW(TABLE_CONTENTS_CONDITION), m_pContentsConditionTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_EACH))
+	{
+		DBO_CREATE_TABLE(CEachDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_EACH), m_pEachDropTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_EVENT_TIME))
+	{
+		DBO_CREATE_TABLE(CEventTimeTable, serializer, pFileNameList->GetFileNameW(TABLE_EVENT_TIME), m_pEventTimeTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_EXCELLENT))
+	{
+		DBO_CREATE_TABLE(CExcellentDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_EXCELLENT), m_pExcellentDropTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_GAME_MANIA_TIME))
+	{
+		DBO_CREATE_TABLE(CGameManiaTimeTable, serializer, pFileNameList->GetFileNameW(TABLE_GAME_MANIA_TIME), m_pGameManiaTimeTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_ITEM_ENCHANT_RATE))
+	{
+		DBO_CREATE_TABLE(CItemEnchantRateTable, serializer, pFileNameList->GetFileNameW(TABLE_ITEM_ENCHANT_RATE), m_pItemEnchantRateTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_ITEM_OPTION_VALUE_PROBABILITY))
+	{
+		DBO_CREATE_TABLE(CItemOptionValueProbabilityTable, serializer, pFileNameList->GetFileNameW(TABLE_ITEM_OPTION_VALUE_PROBABILITY), m_pItemOptionValueProbabilityTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_ITEM_UPGRADE_RATE))
+	{
+		DBO_CREATE_TABLE(CItemUpgradeRateTable, serializer, pFileNameList->GetFileNameW(TABLE_ITEM_UPGRADE_RATE), m_pItemUpgradeRateTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_LEGENDARY))
+	{
+		DBO_CREATE_TABLE(CLegendaryDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_LEGENDARY), m_pLegendaryDropTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_NORMAL))
+	{
+		DBO_CREATE_TABLE(CNormalDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_NORMAL), m_pNormalDropTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_RACE))
+	{
+		DBO_CREATE_TABLE(CRaceTable, serializer, pFileNameList->GetFileNameW(TABLE_RACE), m_pRaceTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_SUPERIOR))
+	{
+		DBO_CREATE_TABLE(CSuperiorDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_SUPERIOR), m_pSuperiorDropTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_TEXT_SERVER))
+	{
+		DBO_CREATE_TABLE(CTextServerTable, serializer, pFileNameList->GetFileNameW(TABLE_TEXT_SERVER), m_pTextServerTable, pCall);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_TYPE))
+	{
+		DBO_CREATE_TABLE(CTypeDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_TYPE), m_pTypeDropTable, pCall);
 	}
 #endif
 	//--------------------------------------------------------------------------------
@@ -1101,8 +1203,90 @@ void CTableContainer::Destroy()
 		m_pDynamicFieldSystemTable = NULL;
 	}
 
+	// V2 port (Game Data Tables)
+	if (NULL != m_pBasicDropTable)
+	{
+		delete m_pBasicDropTable;
+		m_pBasicDropTable = NULL;
+	}
+	if (NULL != m_pClassTable)
+	{
+		delete m_pClassTable;
+		m_pClassTable = NULL;
+	}
+	if (NULL != m_pContentsConditionTable)
+	{
+		delete m_pContentsConditionTable;
+		m_pContentsConditionTable = NULL;
+	}
+	if (NULL != m_pEachDropTable)
+	{
+		delete m_pEachDropTable;
+		m_pEachDropTable = NULL;
+	}
+	if (NULL != m_pEventTimeTable)
+	{
+		delete m_pEventTimeTable;
+		m_pEventTimeTable = NULL;
+	}
+	if (NULL != m_pExcellentDropTable)
+	{
+		delete m_pExcellentDropTable;
+		m_pExcellentDropTable = NULL;
+	}
+	if (NULL != m_pGameManiaTimeTable)
+	{
+		delete m_pGameManiaTimeTable;
+		m_pGameManiaTimeTable = NULL;
+	}
+	if (NULL != m_pItemEnchantRateTable)
+	{
+		delete m_pItemEnchantRateTable;
+		m_pItemEnchantRateTable = NULL;
+	}
+	if (NULL != m_pItemOptionValueProbabilityTable)
+	{
+		delete m_pItemOptionValueProbabilityTable;
+		m_pItemOptionValueProbabilityTable = NULL;
+	}
+	if (NULL != m_pItemUpgradeRateTable)
+	{
+		delete m_pItemUpgradeRateTable;
+		m_pItemUpgradeRateTable = NULL;
+	}
+	if (NULL != m_pLegendaryDropTable)
+	{
+		delete m_pLegendaryDropTable;
+		m_pLegendaryDropTable = NULL;
+	}
+	if (NULL != m_pNormalDropTable)
+	{
+		delete m_pNormalDropTable;
+		m_pNormalDropTable = NULL;
+	}
+	if (NULL != m_pRaceTable)
+	{
+		delete m_pRaceTable;
+		m_pRaceTable = NULL;
+	}
+	if (NULL != m_pSuperiorDropTable)
+	{
+		delete m_pSuperiorDropTable;
+		m_pSuperiorDropTable = NULL;
+	}
+	if (NULL != m_pTextServerTable)
+	{
+		delete m_pTextServerTable;
+		m_pTextServerTable = NULL;
+	}
+	if (NULL != m_pTypeDropTable)
+	{
+		delete m_pTypeDropTable;
+		m_pTypeDropTable = NULL;
+	}
+
 	//--------------------------------------------------------------------------------
-	
+
 	//--------------------------------------------------------------------------------
 	// Item
 	//--------------------------------------------------------------------------------
@@ -1751,10 +1935,76 @@ bool CTableContainer::SaveToFile(CNtlBitFlagManager& rTableFlag, CTableFileNameL
 	{
 		DBO_EXPORT_TABLE(m_pMobServerTable, serializer, pFileNameList->GetFileNameW(TABLE_MOB_SERVER), bNeedToEncrypt);
 	}
+
+	// V2 port (Game Data Tables)
+	if (false != rTableFlag.IsSet(TABLE_DROP_BASIC))
+	{
+		DBO_EXPORT_TABLE(m_pBasicDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_BASIC), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_CLASS))
+	{
+		DBO_EXPORT_TABLE(m_pClassTable, serializer, pFileNameList->GetFileNameW(TABLE_CLASS), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_CONTENTS_CONDITION))
+	{
+		DBO_EXPORT_TABLE(m_pContentsConditionTable, serializer, pFileNameList->GetFileNameW(TABLE_CONTENTS_CONDITION), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_EACH))
+	{
+		DBO_EXPORT_TABLE(m_pEachDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_EACH), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_EVENT_TIME))
+	{
+		DBO_EXPORT_TABLE(m_pEventTimeTable, serializer, pFileNameList->GetFileNameW(TABLE_EVENT_TIME), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_EXCELLENT))
+	{
+		DBO_EXPORT_TABLE(m_pExcellentDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_EXCELLENT), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_GAME_MANIA_TIME))
+	{
+		DBO_EXPORT_TABLE(m_pGameManiaTimeTable, serializer, pFileNameList->GetFileNameW(TABLE_GAME_MANIA_TIME), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_ITEM_ENCHANT_RATE))
+	{
+		DBO_EXPORT_TABLE(m_pItemEnchantRateTable, serializer, pFileNameList->GetFileNameW(TABLE_ITEM_ENCHANT_RATE), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_ITEM_OPTION_VALUE_PROBABILITY))
+	{
+		DBO_EXPORT_TABLE(m_pItemOptionValueProbabilityTable, serializer, pFileNameList->GetFileNameW(TABLE_ITEM_OPTION_VALUE_PROBABILITY), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_ITEM_UPGRADE_RATE))
+	{
+		DBO_EXPORT_TABLE(m_pItemUpgradeRateTable, serializer, pFileNameList->GetFileNameW(TABLE_ITEM_UPGRADE_RATE), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_LEGENDARY))
+	{
+		DBO_EXPORT_TABLE(m_pLegendaryDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_LEGENDARY), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_NORMAL))
+	{
+		DBO_EXPORT_TABLE(m_pNormalDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_NORMAL), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_RACE))
+	{
+		DBO_EXPORT_TABLE(m_pRaceTable, serializer, pFileNameList->GetFileNameW(TABLE_RACE), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_SUPERIOR))
+	{
+		DBO_EXPORT_TABLE(m_pSuperiorDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_SUPERIOR), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_TEXT_SERVER))
+	{
+		DBO_EXPORT_TABLE(m_pTextServerTable, serializer, pFileNameList->GetFileNameW(TABLE_TEXT_SERVER), bNeedToEncrypt);
+	}
+	if (false != rTableFlag.IsSet(TABLE_DROP_TYPE))
+	{
+		DBO_EXPORT_TABLE(m_pTypeDropTable, serializer, pFileNameList->GetFileNameW(TABLE_DROP_TYPE), bNeedToEncrypt);
+	}
 	//--------------------------------------------------------------------------------
-	
-	
-	
+
+
+
 	//--------------------------------------------------------------------------------
 	// Item
 	//--------------------------------------------------------------------------------
@@ -1952,7 +2202,7 @@ bool CTableContainer::SaveToFile(CNtlBitFlagManager& rTableFlag, CTableFileNameL
 	//--------------------------------------------------------------------------------
 	// GraphicData
 	//--------------------------------------------------------------------------------
-	// ±×·¡ÇÈ µ¥ÀÌÅ¸´Â TableContainer·Î exportÇÏÁö ¾Ê½À´Ï´Ù.
+	// ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ TableContainerï¿½ï¿½ exportï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.
 	// Graphic data is not supposed to be exported via TableContainer.
 	// by YOSHIKI(2007-04-05)
 

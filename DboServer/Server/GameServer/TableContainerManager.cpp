@@ -184,6 +184,37 @@ bool CTableContainerManager::CreateTableContainer(BYTE LoadTableFormat, char* ps
 	flagManager.Set(CTableContainer::TABLE_DYNAMIC_FIELD_SYSTEM);
 	fileNameList.SetFileName(CTableContainer::TABLE_DYNAMIC_FIELD_SYSTEM, "Table_Event_System_Dynamic_Data");
 
+	// V2 port (Game Data Tables) — see .claude/PROGRESS.md
+	flagManager.Set(CTableContainer::TABLE_CLASS);
+	fileNameList.SetFileName(CTableContainer::TABLE_CLASS,					"td_class");
+	flagManager.Set(CTableContainer::TABLE_RACE);
+	fileNameList.SetFileName(CTableContainer::TABLE_RACE,						"td_race");
+	flagManager.Set(CTableContainer::TABLE_CONTENTS_CONDITION);
+	fileNameList.SetFileName(CTableContainer::TABLE_CONTENTS_CONDITION,		"Table_Contents_Condition_Data");
+	flagManager.Set(CTableContainer::TABLE_DROP_EACH);
+	fileNameList.SetFileName(CTableContainer::TABLE_DROP_EACH,				"table_each_drop_data");
+	flagManager.Set(CTableContainer::TABLE_EVENT_TIME);
+	fileNameList.SetFileName(CTableContainer::TABLE_EVENT_TIME,				"table_event_time_data");
+	flagManager.Set(CTableContainer::TABLE_DROP_EXCELLENT);
+	fileNameList.SetFileName(CTableContainer::TABLE_DROP_EXCELLENT,			"table_excellent_drop_data");
+	flagManager.Set(CTableContainer::TABLE_ITEM_ENCHANT_RATE);
+	fileNameList.SetFileName(CTableContainer::TABLE_ITEM_ENCHANT_RATE,		"table_item_enchant_rate_data");
+	flagManager.Set(CTableContainer::TABLE_ITEM_OPTION_VALUE_PROBABILITY);
+	fileNameList.SetFileName(CTableContainer::TABLE_ITEM_OPTION_VALUE_PROBABILITY,	"table_item_option_value_probability_data");
+	flagManager.Set(CTableContainer::TABLE_ITEM_UPGRADE_RATE);
+	fileNameList.SetFileName(CTableContainer::TABLE_ITEM_UPGRADE_RATE,		"Table_Item_Upgrade_Rate_Data");
+	flagManager.Set(CTableContainer::TABLE_DROP_LEGENDARY);
+	fileNameList.SetFileName(CTableContainer::TABLE_DROP_LEGENDARY,			"table_legendary_drop_data");
+	flagManager.Set(CTableContainer::TABLE_DROP_NORMAL);
+	fileNameList.SetFileName(CTableContainer::TABLE_DROP_NORMAL,				"table_normal_drop_data");
+	flagManager.Set(CTableContainer::TABLE_DROP_SUPERIOR);
+	fileNameList.SetFileName(CTableContainer::TABLE_DROP_SUPERIOR,			"table_superior_drop_data");
+	flagManager.Set(CTableContainer::TABLE_TEXT_SERVER);
+	fileNameList.SetFileName(CTableContainer::TABLE_TEXT_SERVER,				"table_text_server_data");
+	flagManager.Set(CTableContainer::TABLE_DROP_TYPE);
+	fileNameList.SetFileName(CTableContainer::TABLE_DROP_TYPE,				"table_type_drop_data");
+	// TABLE_DROP_BASIC / TABLE_GAME_MANIA_TIME intentionally not Set — no .rdf data available yet (see PROGRESS.md)
+
 	flagManager.Set(CTableContainer::TABLE_MODEL_TOOL_CHAR);
 	fileNameList.SetFileName(CTableContainer::TABLE_MODEL_TOOL_CHAR, ".\\resource\\property");
 	//flagManager.Set(CTableContainer::TABLE_MODEL_TOOL_OBJ);

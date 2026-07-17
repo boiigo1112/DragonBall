@@ -218,6 +218,7 @@
     <ClCompile Include="Gui\LittleQuestContainer.cpp" />
     <ClCompile Include="Gui\LoadingGui.cpp" />
     <ClCompile Include="Gui\LoginGui.cpp" />
+    <ClCompile Include="Gui\VirtualKeyboardGui.cpp" />
     <ClCompile Include="Gui\LoginGuiGroup.cpp" />
     <ClCompile Include="Gui\LogoGui.cpp" />
     <ClCompile Include="Gui\MailSystemGui.cpp" />
@@ -562,6 +563,7 @@
     <ClInclude Include="Gui\LittleQuestContainer.h" />
     <ClInclude Include="Gui\LoadingGui.h" />
     <ClInclude Include="Gui\LoginGui.h" />
+    <ClInclude Include="Gui\VirtualKeyboardGui.h" />
     <ClInclude Include="Gui\LoginGuiGroup.h" />
     <ClInclude Include="Gui\LogoGui.h" />
     <ClInclude Include="Gui\MailSystemGui.h" />

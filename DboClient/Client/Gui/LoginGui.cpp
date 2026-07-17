@@ -1,5 +1,6 @@
 #include "precomp_dboclient.h"
 #include "LoginGui.h"
+#include "VirtualKeyboardGui.h"
 
 // shared
 #include "NtlResultCode.h"
@@ -57,14 +58,14 @@ RwBool CLogInGui::Create()
 
 	m_pFrame = (gui::CFrame*)GetComponent("frmParent");
 
-	// ¹è°æ
+	// ï¿½ï¿½ï¿½
 	m_pFlashBackground = (gui::CFlash*)GetComponent("flaBackground");
 
 	m_pFlashCredit = (gui::CFlash*)GetComponent("flaCredit");
 	m_pFlashCredit->Show(false);
 
 
-	// µ¿¿µ»ó Àç»ý ¹öÆ°
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
 	m_pCinemaButton = (gui::CButton*)GetComponent("CinemaButton");
 	m_pCinemaButton->SetTextFont(DEFAULT_FONT, 105, DEFAULT_FONT_ATTR);
 	m_pCinemaButton->SetTextFocusColor(INFOCOLOR_LOBBY_FOC);
@@ -72,7 +73,7 @@ RwBool CLogInGui::Create()
 	m_pCinemaButton->SetText( GetDisplayStringManager()->GetString("DST_LOGIN_PLAY_MOVIE") );
 	m_slotCinemaButton = m_pCinemaButton->SigClicked().Connect( this, &CLogInGui::ClickedCinemaButton);
 
-	// Á¦ÀÛÁø º¸±â ¹öÆ°
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
 	m_pCreditButton = (gui::CButton*)GetComponent("CreditButton");
 	m_pCreditButton->SetTextFont(DEFAULT_FONT, 105, DEFAULT_FONT_ATTR);
 	m_pCreditButton->SetTextFocusColor(INFOCOLOR_LOBBY_FOC);
@@ -115,24 +116,24 @@ RwBool CLogInGui::Create()
 	// Input box background
 	m_srfInputDialogBack.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface( "Login.srf", "srfInputDialogBack" ));
 
-	// °øÁö»çÇ× ¹ØÁÙ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	m_NoticeUnderLine.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface( "Login.srf", "underLine" ));
 
-	// '°èÁ¤ ÀÌ¸§' ½ºÅÂÆ½
+	// 'ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½' ï¿½ï¿½ï¿½ï¿½Æ½
 	rect.SetRectWH(417, 588, 60, 30);
 	m_pAccountName = NTL_NEW gui::CStaticBox( rect, m_pFrame, GetNtlGuiManager()->GetSurfaceManager(), COMP_TEXT_CENTER );
 	m_pAccountName->CreateFontStd(DEFAULT_FONT, DEFAULT_FONT_SIZE, DEFAULT_FONT_ATTR);
 	m_pAccountName->SetText( GetDisplayStringManager()->GetString("DST_LOGIN_ID") );
 	m_pAccountName->Enable(false);
 
-	// 'ºñ¹Ð¹øÈ£' ½ºÅÂÆ½
+	// 'ï¿½ï¿½Ð¹ï¿½È£' ï¿½ï¿½ï¿½ï¿½Æ½
 	rect.SetRectWH(417, 616, 60, 30);
 	m_pPassward = NTL_NEW gui::CStaticBox( rect, m_pFrame, GetNtlGuiManager()->GetSurfaceManager(), COMP_TEXT_CENTER );
 	m_pPassward->CreateFontStd(DEFAULT_FONT, DEFAULT_FONT_SIZE, DEFAULT_FONT_ATTR);
 	m_pPassward->SetText( GetDisplayStringManager()->GetString("DST_LOGIN_PASSWARD") );
 	m_pPassward->Enable(false);
 
-	// 'Dbo °øÁö»çÇ×' ½ºÅÂÆ½
+	// 'Dbo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½Æ½
 	rect.SetRectWH(773, 436, 220, 30);
 	m_pNotive = NTL_NEW gui::CStaticBox( rect, m_pFrame, GetNtlGuiManager()->GetSurfaceManager(), COMP_TEXT_CENTER);
 	m_pNotive->CreateFontStd(DEFAULT_FONT, DEFAULT_FONT_SIZE, DEFAULT_FONT_ATTR);
@@ -160,8 +161,32 @@ RwBool CLogInGui::Create()
 	m_pPasswardInput->SetCaretSize(dINPUTBOX_CARET_WIDTH, dINPUTBOX_CARET_HEIGHT);
 	m_pPasswardInput->SetMaxLength(NTL_MAX_SIZE_USERPW);
 	m_pPasswardInput->SetPasswordMode(TRUE);
-	m_slotEnterPassward = m_pPasswardInput->SigReturnPressed().Connect(this, &CLogInGui::PressEnder_in_PasswarsBox);	
+	m_slotEnterPassward = m_pPasswardInput->SigReturnPressed().Connect(this, &CLogInGui::PressEnder_in_PasswarsBox);
+	m_slotAccountInputGotFocus = m_pAccountInput->SigGotFocus().Connect(this, &CLogInGui::OnAccountInput_GotFocus);
+	m_slotPasswarsInputGotFocus = m_pPasswardInput->SigGotFocus().Connect(this, &CLogInGui::OnPasswarsInput_GotFocus);
 
+	// Virtual keyboard toggle button
+	m_pVirtualKeyButton = (gui::CButton*)GetComponent("VirtualKeyButton");
+	m_pVirtualKeyButton->SetTextFont(DEFAULT_FONT, 105, DEFAULT_FONT_ATTR);
+	m_pVirtualKeyButton->SetTextFocusColor(INFOCOLOR_LOBBY_FOC);
+	m_pVirtualKeyButton->SetTextDownColor(INFOCOLOR_LOBBY_DOWN);
+	// Short fixed label: this button's text table entry (DST_VIRTUALKEYBOARD) doesn't
+	// exist in this build's string tables, and the fallback "String not found" text
+	// overflows the button's small hit box, so use a short literal instead.
+	m_pVirtualKeyButton->SetText(L"KB");
+	m_slotVirtualKeyButton = m_pVirtualKeyButton->SigClicked().Connect(this, &CLogInGui::ClickedVirtualKeyButton);
+	m_pVirtualKeyButton->Enable(false);
+
+	m_pVirtualKeyboard = NTL_NEW CVirtualKeyboardGui("VirtualKeyboardGui");
+	if (!m_pVirtualKeyboard->Create())
+	{
+		if (m_pVirtualKeyboard)
+		{
+			m_pVirtualKeyboard->Destroy();
+			NTL_DELETE(m_pVirtualKeyboard);
+			m_pVirtualKeyboard = NULL;
+		}
+	}
 
 	// Locate Component
 	LocateComponent(GetDboGlobal()->GetScreenWidth(), GetDboGlobal()->GetScreenHeight());
@@ -180,12 +205,13 @@ RwBool CLogInGui::Create()
 
 	m_handleKeyDown = CInputHandler::GetInstance()->LinkKeyDown(this, &CLogInGui::KeyboardDownHandler);
 
-	// event µî·Ï.
+	// event ï¿½ï¿½ï¿½.
 	LinkMsg(g_EventLoginGuiEnable, 0);
 	LinkMsg(g_EventLogInStageStateEnter, 0);
 	LinkMsg(g_EventLogInStageStateExit, 0);
 	LinkMsg(g_EventLogInStageTimeOut, 0);
-	LinkMsg(g_EventResize, 0);	
+	LinkMsg(g_EventResize, 0);
+	LinkMsg(g_EventVirtualKeyboard, 0);
 
 	Show(false);
 
@@ -196,6 +222,13 @@ RwBool CLogInGui::Create()
 VOID CLogInGui::Destroy()
 {
 	NTL_FUNCTION("CLogInGui::Destroy");
+
+	if (m_pVirtualKeyboard)
+	{
+		m_pVirtualKeyboard->Destroy();
+		NTL_DELETE(m_pVirtualKeyboard);
+		m_pVirtualKeyboard = NULL;
+	}
 
 	NTL_DELETE(m_pAccountName);
 	NTL_DELETE(m_pPassward);
@@ -215,8 +248,9 @@ VOID CLogInGui::Destroy()
 	UnLinkMsg(g_EventLoginGuiEnable);
 	UnLinkMsg(g_EventLogInStageStateEnter);
 	UnLinkMsg(g_EventLogInStageStateExit);
-	UnLinkMsg(g_EventLogInStageTimeOut);	
-	UnLinkMsg(g_EventResize);	
+	UnLinkMsg(g_EventLogInStageTimeOut);
+	UnLinkMsg(g_EventResize);
+	UnLinkMsg(g_EventVirtualKeyboard);
 
 	CNtlPLGui::DestroyComponents();
 	CNtlPLGui::Destroy(); 
@@ -263,6 +297,17 @@ VOID CLogInGui::LocateComponent(RwInt32 iWidth, RwInt32 iHeight)
 	m_srfInputDialogBack.GetRect(rect);
 
 	m_pLoginButton->SetPosition(rect.left + 39, rect.top + 83);
+
+	// Main's login panel is only 222px wide (V2's is much larger) and already fully packed
+	// (Start button spans nearly the whole width), so there's no free space inside the panel
+	// for a second button â€” place it just outside the panel's right edge, aligned with the
+	// Start button row, instead of squeezing/shrinking it into an ill-fitting spot inside.
+	m_pVirtualKeyButton->SetPosition(rect.right + 8, rect.top + 83);
+	// Place the keyboard dialog entirely above the login panel. The panel sits near the
+	// bottom of the screen, so there isn't 160px of room below it to fit the keyboard
+	// without running off-screen; above the panel is clear background art with room to spare.
+	if (m_pVirtualKeyboard)
+		m_pVirtualKeyboard->GetDialog()->SetPosition(rect.left, rect.top - 170);
 
 	m_pAccountName->SetPosition(rect.left + 16, rect.top + 20);
 	m_pPassward->SetPosition(rect.left + 16, rect.top + 49);
@@ -417,6 +462,35 @@ VOID CLogInGui::PressEnder_in_PasswarsBox()
 	ClickedLoginButton(NULL);
 }
 
+VOID CLogInGui::OnAccountInput_GotFocus()
+{
+	if (m_pVirtualKeyboard)
+	{
+		m_pVirtualKeyboard->GetDialog()->Show(false);
+		m_pVirtualKeyButton->Enable(false);
+	}
+}
+
+VOID CLogInGui::OnPasswarsInput_GotFocus()
+{
+	if (m_pVirtualKeyboard)
+	{
+		m_pVirtualKeyButton->Enable(true);
+		m_pVirtualKeyboard->GetDialog()->Show(true);
+	}
+}
+
+VOID CLogInGui::ClickedVirtualKeyButton(gui::CComponent* pComponent)
+{
+	if (m_pVirtualKeyboard)
+	{
+		if (m_pVirtualKeyboard->GetDialog()->IsVisible())
+			m_pVirtualKeyboard->GetDialog()->Show(false);
+		else
+			m_pVirtualKeyboard->GetDialog()->Show(true);
+	}
+}
+
 RwInt32 CLogInGui::TabButtonHandle()
 {
 	if( !IsShow() )
@@ -474,6 +548,29 @@ VOID CLogInGui::HandleEvents( RWS::CMsg &msg )
 	else if(msg.Id == g_EventResize)
 	{
 		ResizeEventHandler(msg);
+	}
+	else if (msg.Id == g_EventVirtualKeyboard)
+	{
+		SDboEventKeyboard* pData = reinterpret_cast<SDboEventKeyboard*>(msg.pData);
+
+		std::wstring text = m_pPasswardInput->GetText();
+
+		if (pData->key == "51") // backspace
+		{
+			if (!text.empty())
+				text.pop_back();
+		}
+		else if (pData->key == "52") // all delete
+		{
+			text.clear();
+		}
+		else
+		{
+			for (size_t i = 0; i < pData->key.size(); i++)
+				text += (WCHAR)pData->key[i];
+		}
+
+		m_pPasswardInput->SetText(text.c_str());
 	}
 
 	NTL_RETURNVOID();

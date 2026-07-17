@@ -4,6 +4,7 @@
 #include "QuestDropTable.h"
 
 #include "NtlSerializer.h"
+#include <codecvt>
 
 WCHAR* CQuestDropTable::m_pwszSheetList[] =
 {
@@ -233,5 +234,71 @@ bool CQuestDropTable::SaveToBinary(CNtlSerializer& serializer)
 		pTableData->SaveToBinary(serializer);
 	}
 
+	return true;
+}
+
+template <typename T>
+void CQuestDropTable::add(std::wofstream& fw, T str)
+{
+	fw << str << L"\t";
+}
+
+bool CQuestDropTable::ConvertTableTXT()
+{
+	std::string pathNameTxt = ".\\TXT\\table_quest_drop_data.txt";
+	CTable::TABLEIT iter;
+
+	std::wofstream fw;
+	fw.open(pathNameTxt);
+
+	if (fw.is_open())
+	{
+		const std::locale utf8_locale = std::locale(std::locale(), new std::codecvt_utf8<wchar_t>());
+		fw.imbue(utf8_locale);
+
+		for (iter = Begin(); End() != iter; iter++)
+		{
+			sQUEST_DROP_TBLDAT* table = (sQUEST_DROP_TBLDAT*)(iter->second);
+			add(fw, table->tblidx);
+
+			for (BYTE i = 0; i < QUEST_ITEM_DROP_MAX_COUNT; i++)
+			{
+				add(fw, table->aQuestItemTblidx[i]);
+				add(fw, table->aDropRate[i]);
+			}
+			fw << L"\n";
+		}
+		fw.close();
+	}
+	return true;
+}
+
+bool CQuestDropTable::LoadFromTXT(std::wstring pathNameTxt)
+{
+	CTable::TABLEIT iter;
+
+	std::wifstream infile(pathNameTxt);
+	std::wstring line;
+	const std::locale utf8_locale = std::locale(std::locale(), new std::codecvt_utf8<wchar_t>());
+	infile.imbue(utf8_locale);
+
+	while (getline(infile, line))
+	{
+		sQUEST_DROP_TBLDAT* table = new sQUEST_DROP_TBLDAT;
+		std::vector<std::wstring> row;
+		BYTE num = 0;
+
+		split(line, row);
+
+		table->tblidx = sti(row.at(num++));
+
+		for (BYTE i = 0; i < QUEST_ITEM_DROP_MAX_COUNT; i++)
+		{
+			table->aQuestItemTblidx[i] = sti(row.at(num++));
+			table->aDropRate[i] = stof(row.at(num++));
+		}
+
+		AddTable(table, false, false);
+	}
 	return true;
 }

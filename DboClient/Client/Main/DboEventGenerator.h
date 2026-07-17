@@ -2,7 +2,7 @@
  *
  * File			: DboEvenetGenerator.h
  * Author		: HyungSuk, Jang
- * Copyright	: (ÁÖ)NTL
+ * Copyright	: (ï¿½ï¿½)NTL
  * Date			: 2005. 9. 27	
  * Abstract		: DBO event generator
  *****************************************************************************
@@ -45,6 +45,7 @@ public:
 	
 	static void LoginGuiEnable(void);
 	static void CharSelectGuiEnable(void);
+	static void SendVirtualKeyboard(const std::string& key);
 	static void MsgBoxShow(const char* strKey, const WCHAR *pString, RwBool bPopup = FALSE, RwBool bHasInput = FALSE, RwReal fShowTime = 0.0f, sMsgBoxData* pData = NULL, std::list<sMsgBoxCustomBtn>* plistCustomBtn = NULL, RwBool bAcceptDuplicate = TRUE, RwBool bUpdate = FALSE );
 	static void MsgBoxResult( RwInt32 eResult, const char* StringID, sMsgBoxData* pData);
 	static void ChatGuiMode(RwBool bMode);
@@ -111,18 +112,18 @@ public:
 
 	static void OpenHelpContent(RwUInt32 uiDialogType);
 
-	static void	EnableItemIcon( RwBool bEnable, RwInt32 ePlace, RwUInt32 uiSlotIdx, RwInt32 nPlaceIdx = -1 ); // peessi: nPlaceIdx´Â WareHouse, Bag¿¡¸¸ ¾²ÀÓ.
+	static void	EnableItemIcon( RwBool bEnable, RwInt32 ePlace, RwUInt32 uiSlotIdx, RwInt32 nPlaceIdx = -1 ); // peessi: nPlaceIdxï¿½ï¿½ WareHouse, Bagï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	static void CapsuleLockItem( RwBool bEnable, RwInt32 ePlace, RwUInt32 uiSlotIdx, RwInt32 nPlaceIdx = -1 );
 	static void CapsuleLockItemWithoutBag( RwBool bEnable, SERIAL_HANDLE hItem );
 
 	static void DirectMoveIcon(RwUInt32 uiSrcSerial, RwUInt32 eSrcPlace, RwUInt32 eDestPlace, RwUInt32 uiSrcSlotIdx, RwUInt32 uiSrcStackCount);
 
-	// °³ÀÎ»óÁ¡
+	// ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½
 	static void PrivateShopSelectNfy(RwUInt8 uiPrivateShopPos, RwUInt8 uiItemState);
 	static void RegPrivateShopCartItem(RwUInt32 uiSerial, RwUInt32 uiPlace, RwUInt32 uiPos, RwUInt32 uiStackCount, RwUInt32 uiPrice, void* pData);
 	static void RegPrivateShopItem(RwUInt32 uiPlace, RwUInt32 uiIndex, RwUInt32 uiPos);
 
-	// °³ÀÎ»óÁ¡ ÈïÁ¤
+	// ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	static void PrivateShopBusinessStart(RwUInt8 uiType, RwUInt32 uiShopOwner, WCHAR* pwcTargetName, sPRIVATESHOP_ITEM_DATA* pPrivateShopItemData, void* pGui);
 	static void PrivateShopBusinessFluctuations(RwUInt8 uiType, sPRIVATESHOP_ITEM_DATA* pPrivateShopItemData, RwUInt32 uiStartPrice);
 	static void PrivateShopBusinessCloseNfy(RwUInt32 uiShopOwner);
@@ -178,7 +179,7 @@ public:
 	// Link Script
 	static void ScriptLinkNotify(RwUInt8 byType, RwUInt8 byAction, WCHAR* pwcValue );
 
-	// ÁÖ»çÀ§
+	// ï¿½Ö»ï¿½ï¿½ï¿½
 	static void DiceStart(RwUInt8 byWorkID, void* pExData = NULL);
 	static void DiceResult(SERIAL_HANDLE hHandle, RwUInt8 byWorkID, RwUInt8 byResultNum);
 	static void DiceResultShow(SERIAL_HANDLE hHandle, RwUInt8 byWorkID, RwUInt8 byResultNum);
@@ -267,7 +268,7 @@ public:
 	static void OpenBagGui();
 	static void OpenScouterBackgroundGui();
     //////////////////////////////////////////////////////////////////////////
-    // ÇÑ±¹ »ó¿ëÈ­ °ü·Ã
+    // ï¿½Ñ±ï¿½ ï¿½ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
     static void UpdateNetPy(NETP netPy, NETP dwAccumulationNetP, DWORD timeNextGainTime);       
     static void NetMarbleMemberShipNfy();
 

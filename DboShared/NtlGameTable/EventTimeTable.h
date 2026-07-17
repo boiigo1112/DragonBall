@@ -1,24 +1,27 @@
 #pragma once
-
+//last update 20.08.2015
 #include "Table.h"
 #include <fstream>
 
-const int QUEST_ITEM_DROP_MAX_COUNT = 5;
-
 #pragma pack(push, 4)
-struct sQUEST_DROP_TBLDAT : public sTBLDAT
+struct sEVENT_TIME_TBLDAT : public sTBLDAT
 {
-	sQUEST_DROP_TBLDAT()
-	{
-		memset( aQuestItemTblidx, 0xFF, sizeof(TBLIDX) * QUEST_ITEM_DROP_MAX_COUNT );
-		memset( aDropRate, 0xFF, sizeof(float) * QUEST_ITEM_DROP_MAX_COUNT);
-	}
 
 public:
-	TBLIDX		aQuestItemTblidx[QUEST_ITEM_DROP_MAX_COUNT];
-	float		aDropRate[QUEST_ITEM_DROP_MAX_COUNT];
 
-protected:
+	WCHAR		wszNameText[256];
+	BYTE		byEventType;
+	bool		bMonday;
+	bool		bTuesday;
+	bool		bWednesday;
+	bool		bThursday;
+	bool		bFriday;
+	bool		bSaturday;
+	bool		bSunday;
+	BYTE		byStarTime;
+	BYTE		byEndTime;
+
+public:
 
 	virtual int GetDataSize()
 	{
@@ -27,17 +30,11 @@ protected:
 };
 #pragma pack(pop)
 
-class CQuestDropTable : public CTable
+class CEventTimeTable : public CTable
 {
 public:
-
-	CQuestDropTable(void);
-	virtual ~CQuestDropTable(void);
-
-/*
-public:
-
-	BOOL				Check() { return TRUE; }*/
+	CEventTimeTable(void);
+	virtual ~CEventTimeTable(void);
 
 	bool Create(DWORD dwCodePage);
 	void Destroy();
@@ -46,26 +43,22 @@ protected:
 	void Init();
 
 public:
-	sTBLDAT *			FindData(TBLIDX tblidx);
+	sTBLDAT* FindData(TBLIDX tblidx);
 	bool			ConvertTableTXT();
 	template <typename T>
 	void			add(std::wofstream& fw, T str);
 
 protected:
-	WCHAR** GetSheetListInWChar() { return &(CQuestDropTable::m_pwszSheetList[0]); }
+	WCHAR** GetSheetListInWChar() { return &(CEventTimeTable::m_pwszSheetList[0]); }
 	void* AllocNewTable(WCHAR* pwszSheetName, DWORD dwCodePage);
 	bool DeallocNewTable(void* pvTable, WCHAR* pwszSheetName);
-	bool AddTable(void * pvTable, bool bReload, bool bUpdate);
+	bool AddTable(void* pvTable, bool bReload, bool bUpdate);
 	bool SetTableData(void* pvTable, WCHAR* pwszSheetName, std::wstring* pstrDataName, BSTR bstrData);
 
-
 public:
-
 	virtual bool				LoadFromBinary(CNtlSerializer& serializer, bool bReload, bool bUpdate);
-
 	virtual bool				SaveToBinary(CNtlSerializer& serializer);
 	virtual bool				LoadFromTXT(std::wstring pathNameTxt);
-
 private:
 	static WCHAR* m_pwszSheetList[];
 };

@@ -4,7 +4,7 @@
 //
 //	Begin		:	2006-03-09
 //
-//	Copyright	:	¨Ï NTL-Inc Co., Ltd
+//	Copyright	:	ï¿½ï¿½ NTL-Inc Co., Ltd
 //
 //	Desc		:	Chung Doo sup  ( john@ntl-inc.com )
 //
@@ -18,6 +18,8 @@
 
 #include <comutil.h>
 #include <map>
+#include <vector>
+#include <sstream>
 
 class CNtlSerializer;
 class CNtlXMLDoc;
@@ -133,6 +135,10 @@ public:
 	virtual sTBLDAT *			FindData(TBLIDX tblidx) { (void) tblidx; return NULL; }
 	size_t GetNumberOfTables() { return m_mapTableList.size(); }
 
+	// V2 port helpers â€” used by table classes' ConvertTableTXT()/LoadFromTXT() dev-tool methods
+	void			split(const std::wstring& s, std::vector<std::wstring>& elems);
+	unsigned long	sti(std::wstring str);
+
 protected:
 
 	virtual WCHAR** GetSheetListInWChar() = 0;
@@ -198,9 +204,9 @@ protected:
 
 	DWORD 						READ_BITFLAG(BSTR bstr, DWORD dwInvalidValue = 0) { return CheckInvalidValue( bstr ) ? dwInvalidValue : HexToDec( bstr ); }
 
-	//void						CheckNegativeInvalid(char* pszFormatString, BSTR bstr); // @°¡ ÀÖÀ¸¸é ¾ÈµÇ´Â ÇÊµå·Î Assert¸¦ »Ñ·ÁÁØ´Ù.
+	//void						CheckNegativeInvalid(char* pszFormatString, BSTR bstr); // @ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ÈµÇ´ï¿½ ï¿½Êµï¿½ï¿½ Assertï¿½ï¿½ ï¿½Ñ·ï¿½ï¿½Ø´ï¿½.
 
-	void						CheckNegativeInvalid(const wchar_t* pwszFormatString, BSTR bstr); // @°¡ ÀÖÀ¸¸é ¾ÈµÇ´Â ÇÊµå·Î Assert¸¦ »Ñ·ÁÁØ´Ù.
+	void						CheckNegativeInvalid(const wchar_t* pwszFormatString, BSTR bstr); // @ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ÈµÇ´ï¿½ ï¿½Êµï¿½ï¿½ Assertï¿½ï¿½ ï¿½Ñ·ï¿½ï¿½Ø´ï¿½.
 
 public:
 
@@ -219,7 +225,7 @@ protected:
 	DWORD						m_dwCodePage;
 
 	// This is only for displaying a message, so it can't be used for the other purposes.
-	// ¸Þ½ÃÁö¸¦ Ãâ·ÂÇÏ±â À§ÇØ ¼±¾ðµÈ ¸â¹ö º¯¼öÀÌ¹Ç·Î, Á¤ÇØÁø ¿ëµµ ÀÌ¿Ü¿¡´Â »ç¿ëÇÏ¸é ¾È µÈ´Ù.
+	// ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹Ç·ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ëµµ ï¿½Ì¿Ü¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½È´ï¿½.
 	// by YOSHIKI(2007-08-07)
 	WCHAR								m_wszXmlFileName[CTable::TABLE_XML_FILE_NAME_MAX_LENGTH + 1];
 

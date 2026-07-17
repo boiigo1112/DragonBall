@@ -4,7 +4,7 @@
 //
 //	Begin		:	2006-03-09
 //
-//	Copyright	:	¨Ï NTL-Inc Co., Ltd
+//	Copyright	:	ï¿½ï¿½ NTL-Inc Co., Ltd
 //
 //	Desc		:	
 //
@@ -18,6 +18,22 @@
 #include "NtlStringHandler.h"
 
 Dbo_TableErrorCallback CTable::m_pfnErrorCallback = NULL;
+
+void CTable::split(const std::wstring& s, std::vector<std::wstring>& elems)
+{
+	std::wstringstream ss;
+	ss.str(s);
+	std::wstring item;
+	while (std::getline(ss, item, ss.widen('\t')))
+	{
+		elems.push_back(item);
+	}
+}
+
+unsigned long CTable::sti(std::wstring str)
+{
+	return std::stoul(str, nullptr, 10);
+}
 void* CTable::m_pvErrorCallbackArg = NULL;
 
 CTable::CTable(void)
@@ -568,8 +584,8 @@ bool CTable::READ_BOOL(BSTR bstr, const WCHAR* pwszFieldName, bool bInvalidlValu
 
 
 //-----------------------------------------------------------------------------------
-//		Purpose	: string ÀÐ±â
-//		Return	: ¼º°ø - true, ½ÇÆÐ - false
+//		Purpose	: string ï¿½Ð±ï¿½
+//		Return	: ï¿½ï¿½ï¿½ï¿½ - true, ï¿½ï¿½ï¿½ï¿½ - false
 //-----------------------------------------------------------------------------------
 bool CTable::READ_STR(std::string & rDest, BSTR bstr, const char * lpszInvalidValue /*= ""*/)
 {
@@ -589,7 +605,7 @@ bool CTable::READ_STR(std::string & rDest, BSTR bstr, const char * lpszInvalidVa
 	}
 	else
 	{
-		_ASSERT( 0 );	// ¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ
+		_ASSERT( 0 );	// ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 		return false;
 	}
@@ -599,8 +615,8 @@ bool CTable::READ_STR(std::string & rDest, BSTR bstr, const char * lpszInvalidVa
 
 
 //-----------------------------------------------------------------------------------
-//		Purpose	: string ÀÐ±â
-//		Return	: ¼º°ø - true, ½ÇÆÐ - false
+//		Purpose	: string ï¿½Ð±ï¿½
+//		Return	: ï¿½ï¿½ï¿½ï¿½ - true, ï¿½ï¿½ï¿½ï¿½ - false
 //-----------------------------------------------------------------------------------
 bool CTable::READ_STR(std::wstring & rDest, BSTR bstr, const WCHAR * lpwszInvalidValue /*= ""*/)
 {
@@ -703,7 +719,7 @@ bool CTable::READ_STRINGW(BSTR bstr, WCHAR* pwszBuffer, DWORD dwBufferLength, co
 }
 
 //-----------------------------------------------------------------------------------
-//		Purpose	: @¸¦ ³ÖÀ¸¸é ¾ÈµÇ´Â °÷¿¡ ³ÖÀ¸¸é Assert
+//		Purpose	: @ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ÈµÇ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Assert
 //		Return	:
 //-----------------------------------------------------------------------------------
 /*void CTable::CheckNegativeInvalid(char* pszFormatString, BSTR bstr)
@@ -717,11 +733,11 @@ bool CTable::READ_STRINGW(BSTR bstr, WCHAR* pwszBuffer, DWORD dwBufferLength, co
 		vsprintf_s<_countof(szErrorMessage)>(szErrorMessage, pszFormatString, args);
 		va_end(args);
 		_ASSERTE( pszFormatString );
-		_ASSERTE( !"@¸¦ ³ÖÀ» ¼ö ¾ø´Â ÇÊµåÀÔ´Ï´Ù.");
+		_ASSERTE( !"@ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½Ô´Ï´ï¿½.");
 	}
 }*/
 //-----------------------------------------------------------------------------------
-//		Purpose	: @¸¦ ³ÖÀ¸¸é ¾ÈµÇ´Â °÷¿¡ ³ÖÀ¸¸é Assert
+//		Purpose	: @ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ÈµÇ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Assert
 //		Return	:
 //-----------------------------------------------------------------------------------
 void CTable::CheckNegativeInvalid(const wchar_t* pwszFormatString, BSTR bstr)
@@ -739,7 +755,7 @@ void CTable::CheckNegativeInvalid(const wchar_t* pwszFormatString, BSTR bstr)
 
 		::WideCharToMultiByte(::GetACP(), 0, pwszFormatString, -1, szErrorMessage, _countof(szErrorMessage), NULL, NULL);
 		_ASSERTE( szErrorMessage );*/
-		_ASSERTE( !"@¸¦ ³ÖÀ» ¼ö ¾ø´Â ÇÊµåÀÔ´Ï´Ù.");
+		_ASSERTE( !"@ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½Ô´Ï´ï¿½.");
 	}
 }
 

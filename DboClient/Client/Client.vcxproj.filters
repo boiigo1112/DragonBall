@@ -308,6 +308,9 @@
     <ClCompile Include="Gui\LoginGui.cpp">
       <Filter>Gui\Component\Login</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\VirtualKeyboardGui.cpp">
+      <Filter>Gui\Component\Login</Filter>
+    </ClCompile>
     <ClCompile Include="Gui\LoginGuiGroup.cpp">
       <Filter>Gui\Component\Login</Filter>
     </ClCompile>
@@ -1235,6 +1238,9 @@
       <Filter>Gui\Component\Login</Filter>
     </ClInclude>
     <ClInclude Include="Gui\LoginGui.h">
+      <Filter>Gui\Component\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\VirtualKeyboardGui.h">
       <Filter>Gui\Component\Login</Filter>
     </ClInclude>
     <ClInclude Include="Gui\LoginGuiGroup.h">

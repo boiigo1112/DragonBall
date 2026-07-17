@@ -209,11 +209,22 @@ void CDboEventGenerator::LoginGuiEnable(void)
 	_SendMsg(msg);
 }
 
+void CDboEventGenerator::SendVirtualKeyboard(const std::string& key)
+{
+	SDboEventKeyboard sKeyboard;
+	sKeyboard.key = key;
+
+	RWS::CMsg msg;
+	msg.Id = g_EventVirtualKeyboard;
+	msg.pData = reinterpret_cast<void*>(&sKeyboard);
+	_SendMsg(msg);
+}
+
 void CDboEventGenerator::CharSelectGuiEnable(void)
 {
 	RWS::CMsg msg;
 	msg.Id = g_EventCharSelectGuiEnable;
-		
+
 	_SendMsg(msg);
 }
 

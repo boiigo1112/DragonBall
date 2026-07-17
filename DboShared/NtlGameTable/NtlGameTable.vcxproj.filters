@@ -162,6 +162,54 @@
     <ClCompile Include="QuestDropTable.cpp">
       <Filter>TableData\Quest</Filter>
     </ClCompile>
+    <ClCompile Include="BasicDropTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentsConditionTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="EachDropTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="EventTimeTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="ExcellentDropTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManiaTimeTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemEnchantRateTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemOptionValueProbabilityTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemUpgradeRateTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="LegendaryDropTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalDropTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="RaceTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperiorDropTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="TextServerTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeDropTable.cpp">
+      <Filter>TableData\New</Filter>
+    </ClCompile>
     <ClCompile Include="QuestItemTable.cpp">
       <Filter>TableData\Quest</Filter>
     </ClCompile>
@@ -422,6 +470,54 @@
     </ClInclude>
     <ClInclude Include="QuestDropTable.h">
       <Filter>TableData\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicDropTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsConditionTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="EachDropTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="EventTimeTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="ExcellentDropTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManiaTimeTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemEnchantRateTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemOptionValueProbabilityTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemUpgradeRateTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="LegendaryDropTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalDropTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="RaceTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperiorDropTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="TextServerTable.h">
+      <Filter>TableData\New</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeDropTable.h">
+      <Filter>TableData\New</Filter>
     </ClInclude>
     <ClInclude Include="QuestItemTable.h">
       <Filter>TableData\Quest</Filter>

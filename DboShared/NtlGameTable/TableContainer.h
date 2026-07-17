@@ -4,7 +4,7 @@
 //
 //	Begin		:	2007-01-31
 //
-//	Copyright	:	¨Ï NTL-Inc Co., Ltd
+//	Copyright	:	ï¿½ï¿½ NTL-Inc Co., Ltd
 //
 //	Author		:	
 //
@@ -115,6 +115,24 @@ class CNpcServerTable;
 class CMobServerTable;
 class CEventSystemTable;
 class CDynamicFieldSystemTable;
+
+// V2 port (Game Data Tables)
+class CBasicDropTable;
+class CClassTable;
+class CContentsConditionTable;
+class CEachDropTable;
+class CEventTimeTable;
+class CExcellentDropTable;
+class CGameManiaTimeTable;
+class CItemEnchantRateTable;
+class CItemOptionValueProbabilityTable;
+class CItemUpgradeRateTable;
+class CLegendaryDropTable;
+class CNormalDropTable;
+class CRaceTable;
+class CSuperiorDropTable;
+class CTextServerTable;
+class CTypeDropTable;
 
 
 
@@ -238,6 +256,24 @@ public:
 		TABLE_ITEM_GROUP_LIST, //new
 		TABLE_AIR_COSTUME,//new
 
+		// V2 port (Game Data Tables)
+		TABLE_DROP_BASIC,
+		TABLE_CLASS,
+		TABLE_CONTENTS_CONDITION,
+		TABLE_DROP_EACH,
+		TABLE_EVENT_TIME,
+		TABLE_DROP_EXCELLENT,
+		TABLE_GAME_MANIA_TIME,
+		TABLE_ITEM_ENCHANT_RATE,
+		TABLE_ITEM_OPTION_VALUE_PROBABILITY,
+		TABLE_ITEM_UPGRADE_RATE,
+		TABLE_DROP_LEGENDARY,
+		TABLE_DROP_NORMAL,
+		TABLE_RACE,
+		TABLE_DROP_SUPERIOR,
+		// TABLE_TEXT_SERVER already declared above (Text group) â€” reused for CTextServerTable
+		TABLE_DROP_TYPE,
+
 		TABLE_COUNT
 	};
 
@@ -265,7 +301,7 @@ public:
 		virtual bool Call( const char* pfilename, CNtlFileSerializer* pSeralize, const char* pszCryptPassword ) = 0;
 	};
 
-	// Create »ç¿ë ½Ã pCall ÀÌ NULL ÀÏ °æ¿ì ÀÌÀüÀÇ ¹æ½Ä°ú µ¿ÀÏÇÏ°Ô µ¿ÀÛÇÑ´Ù. pCall -> Client »ç¿ë¿ë 
+	// Create ï¿½ï¿½ï¿½ ï¿½ï¿½ pCall ï¿½ï¿½ NULL ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. pCall -> Client ï¿½ï¿½ï¿½ï¿½ 
 	// Create pCall used in this way, the behavior is the same as the previous case NULL. pCall -> Client for use
 	bool							Create(CNtlBitFlagManager& rTableFlag, char* pszPath, CTableFileNameList* pFileNameList, CTable::eLOADING_METHOD eLoadingMethod, DWORD dwCodePage, ICallBack* pCall );	
 
@@ -509,6 +545,24 @@ public:
 	CEventSystemTable*				GetEventSystemTable() { return m_pEventSystemTable; }
 	CDynamicFieldSystemTable*		GetDynamicFieldSystemTable() { return m_pDynamicFieldSystemTable; }
 
+	// V2 port (Game Data Tables)
+	CBasicDropTable*				GetBasicDropTable() { return m_pBasicDropTable; }
+	CClassTable*					GetClassTable() { return m_pClassTable; }
+	CContentsConditionTable*		GetContentsConditionTable() { return m_pContentsConditionTable; }
+	CEachDropTable*					GetEachDropTable() { return m_pEachDropTable; }
+	CEventTimeTable*				GetEventTimeTable() { return m_pEventTimeTable; }
+	CExcellentDropTable*			GetExcellentDropTable() { return m_pExcellentDropTable; }
+	CGameManiaTimeTable*			GetGameManiaTimeTable() { return m_pGameManiaTimeTable; }
+	CItemEnchantRateTable*			GetItemEnchantRateTable() { return m_pItemEnchantRateTable; }
+	CItemOptionValueProbabilityTable*	GetItemOptionValueProbabilityTable() { return m_pItemOptionValueProbabilityTable; }
+	CItemUpgradeRateTable*			GetItemUpgradeRateTable() { return m_pItemUpgradeRateTable; }
+	CLegendaryDropTable*			GetLegendaryDropTable() { return m_pLegendaryDropTable; }
+	CNormalDropTable*				GetNormalDropTable() { return m_pNormalDropTable; }
+	CRaceTable*						GetRaceTable() { return m_pRaceTable; }
+	CSuperiorDropTable*				GetSuperiorDropTable() { return m_pSuperiorDropTable; }
+	CTextServerTable*				GetTextServerTable() { return m_pTextServerTable; }
+	CTypeDropTable*					GetTypeDropTable() { return m_pTypeDropTable; }
+
 
 public:
 
@@ -572,6 +626,24 @@ protected:
 	CEventSystemTable*				m_pEventSystemTable;
 	CDynamicFieldSystemTable*		m_pDynamicFieldSystemTable;
 
+	// V2 port (Game Data Tables)
+	CBasicDropTable*				m_pBasicDropTable;
+	CClassTable*					m_pClassTable;
+	CContentsConditionTable*		m_pContentsConditionTable;
+	CEachDropTable*					m_pEachDropTable;
+	CEventTimeTable*				m_pEventTimeTable;
+	CExcellentDropTable*			m_pExcellentDropTable;
+	CGameManiaTimeTable*			m_pGameManiaTimeTable;
+	CItemEnchantRateTable*			m_pItemEnchantRateTable;
+	CItemOptionValueProbabilityTable*	m_pItemOptionValueProbabilityTable;
+	CItemUpgradeRateTable*			m_pItemUpgradeRateTable;
+	CLegendaryDropTable*			m_pLegendaryDropTable;
+	CNormalDropTable*				m_pNormalDropTable;
+	CRaceTable*						m_pRaceTable;
+	CSuperiorDropTable*				m_pSuperiorDropTable;
+	CTextServerTable*				m_pTextServerTable;
+	CTypeDropTable*					m_pTypeDropTable;
+
 // Item
 	CDragonBallRewardTable*			m_pDragonBallRewardTable;
 	CDragonBallTable*				m_pDragonBallTable;
@@ -602,9 +674,9 @@ protected:
 	CCharmTable*					m_pCharmTable;
 
 // Quest
-	CQuestDropTable*				m_pQuestDropTable;		// Äù½ºÆ® µå·Ó ¾ÆÀÌÅÛ Å×ÀÌºí
+	CQuestDropTable*				m_pQuestDropTable;		// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 
-	CQuestItemTable*				m_pQuestItemTable;		// Äù½ºÆ® ¾ÆÀÌÅÛ Å×ÀÌºí
+	CQuestItemTable*				m_pQuestItemTable;		// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 
 	CQuestProbabilityTable*			m_pQuestProbalityTable;
 
