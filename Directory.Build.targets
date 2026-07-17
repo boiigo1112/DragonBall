@@ -1,0 +1,13 @@
+<Project>
+  <!--
+    Local build-only override: suppress C4819 (source file characters not
+    representable in the current locale codepage) so that the repo's
+    TreatWarningAsError=true projects can compile on a non-matching system
+    locale (e.g. Thai 874) without touching individual .vcxproj files.
+  -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalOptions>/wd4819 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>
