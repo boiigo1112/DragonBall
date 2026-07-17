@@ -2945,6 +2945,22 @@ bool CInputBox_Generic::OnMsgProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 
                 default:
                 {
+					// Raw keyboard WM_CHAR delivers a single ANSI codepage byte for
+					// non-ASCII input (e.g. ก = 0xA1 in codepage 874/Thai), which is
+					// not numerically equal to its Unicode code point. Convert it using
+					// the active codepage so non-Latin scripts (Thai, Cyrillic, etc.)
+					// display as the correct character instead of the wrong glyph.
+					// Synthetic WM_CHAR from IME composition (see m_CompString) already
+					// carries a real Unicode code point above 0xFF, so it is untouched.
+					WCHAR wch = (WCHAR)wParam;
+					if( wParam >= 0x80 && wParam <= 0xFF )
+					{
+						char chAnsi = (char)wParam;
+						WCHAR wchConverted = 0;
+						if( ::MultiByteToWideChar( GetACP(), 0, &chAnsi, 1, &wchConverted, 1 ) > 0 )
+							wch = wchConverted;
+					}
+
 					if(!IsReadOnly())
 					{
 						// If there's a selection and the user
@@ -2960,11 +2976,11 @@ bool CInputBox_Generic::OnMsgProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 						{
 							if( IsNumberOnly() )
 							{
-								if( !iswdigit( (WCHAR)wParam ) )
+								if( !iswdigit( wch ) )
 									break;
 							}
 
-							m_Buffer[m_nCaret] = (WCHAR)wParam;
+							m_Buffer[m_nCaret] = wch;
 							if(IsPasswordMode())
 								m_PwBuffer[m_nCaret] = L'*';
 
@@ -2978,11 +2994,11 @@ bool CInputBox_Generic::OnMsgProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 							{
 								if( IsNumberOnly() )
 								{
-									if( !iswdigit( (WCHAR)wParam ) )
+									if( !iswdigit( wch ) )
 										break;
 								}
 
-								if(m_Buffer.InsertChar( m_nCaret, (WCHAR)wParam ))
+								if(m_Buffer.InsertChar( m_nCaret, wch ))
 								{
 									if(IsPasswordMode())
 										m_PwBuffer.InsertChar(m_nCaret, L'*');

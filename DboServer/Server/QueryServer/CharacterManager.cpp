@@ -33,9 +33,20 @@ void CCharacterManager::CreateCharacter(ACCOUNTID accountId, sPC_SUMMARY& sSum, 
 {
 	UNREFERENCED_PARAMETER(serverFarmId);
 
+	// "%ls" in vsnprintf_s (used by Execute()) converts via the C-runtime's
+	// current locale, which is never set for this process and defaults to
+	// ASCII-only "C" - non-ASCII names (e.g. Thai) fail that conversion and
+	// silently produce a malformed query (Execute() never checks for errors),
+	// so the INSERT is dropped with no row and no error. Ntl_WC2MB converts via
+	// WideCharToMultiByte(GetACP(), ...) instead, which correctly handles the
+	// process's ANSI codepage (874/Thai on this machine), so pass it as "%s".
+	char* pszCharName = Ntl_WC2MB(sSum.awchName);
+
 	GetCharDB.Execute("INSERT INTO characters (CharID,CharName,AccountID,Race,Class,Gender,Face,Hair,HairColor,SkinColor,CurLocX,CurLocY,CurLocZ,WorldID,WorldTable,MapInfoIndex,CreateTime)"
-		"VALUES (%u,'%ls',%u,%u,%u,%u,%u,%u,%u,%u,%f,%f,%f,%u,%u,%u,%I64u)",
-		sSum.charId, sSum.awchName, accountId, sSum.byRace, sSum.byClass, sSum.byGender, sSum.byFace, sSum.byHair, sSum.byHairColor, sSum.bySkinColor,
+		"VALUES (%u,'%s',%u,%u,%u,%u,%u,%u,%u,%u,%f,%f,%f,%u,%u,%u,%I64u)",
+		sSum.charId, pszCharName, accountId, sSum.byRace, sSum.byClass, sSum.byGender, sSum.byFace, sSum.byHair, sSum.byHairColor, sSum.bySkinColor,
 		sSum.fPositionX, sSum.fPositionY, sSum.fPositionZ,
 		sSum.worldId, sSum.worldTblidx, sSum.dwMapInfoIndex, time(0));
+
+	Ntl_CleanUpHeapString(pszCharName);
 }

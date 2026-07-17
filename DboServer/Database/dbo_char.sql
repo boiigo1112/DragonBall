@@ -97,7 +97,7 @@ CREATE TABLE `buffs` (
 DROP TABLE IF EXISTS `characters`;
 CREATE TABLE `characters` (
   `CharID` int(10) unsigned NOT NULL,
-  `CharName` varchar(16) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `CharName` varbinary(16) NOT NULL,
   `AccountID` int(10) unsigned NOT NULL,
   `Level` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `Exp` int(10) unsigned NOT NULL DEFAULT '0',

@@ -26,7 +26,11 @@ void CCharServerSession::RecvCreateCharReq(CNtlPacket * pPacket, CQueryServer* a
 	sCQ_CHARACTER_ADD_REQ * req = (sCQ_CHARACTER_ADD_REQ*)pPacket->GetPacketData();
 
 	//check if char name already exist
-	smart_ptr<QueryResult> namecheck = GetCharDB.Query("SELECT CharID FROM characters WHERE CharName='%ls'", req->awchCharName);
+	// (see CCharacterManager::CreateCharacter for why %s+Ntl_WC2MB is used
+	// instead of %ls, which mangles non-ASCII names such as Thai)
+	char* pszCharNameCheck = Ntl_WC2MB(req->awchCharName);
+	smart_ptr<QueryResult> namecheck = GetCharDB.Query("SELECT CharID FROM characters WHERE CharName='%s'", pszCharNameCheck);
+	Ntl_CleanUpHeapString(pszCharNameCheck);
 	if (namecheck)
 	{
 		CNtlPacket packet(sizeof(sQC_CHARACTER_ADD_RES));

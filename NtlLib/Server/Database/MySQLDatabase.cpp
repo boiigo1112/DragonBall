@@ -77,8 +77,17 @@ std::string MySQLDatabase::Initialize(CNtlString Hostname, unsigned int port, CN
 		return "mysql_init failed.";
 	}
 
-	if (mysql_options(temp, MYSQL_SET_CHARSET_NAME, "utf8"))
-		NTL_PRINT(LOG_SYSTEM, "Could not set utf8 character set.\n");
+	// Server-side text (character names, etc.) is converted from WCHAR using the
+	// process's ANSI codepage (Ntl_WC2MB / vsnprintf_s "%ls"), which is Thai
+	// codepage 874 on a Thai-locale machine. Declaring "utf8" here while sending
+	// raw codepage-874 bytes produced invalid UTF-8 and silently corrupted/
+	// rejected non-ASCII (e.g. Thai) names. "binary" disables all client-side
+	// charset conversion/validation, so whatever bytes the app already produced
+	// are sent and stored as-is (matched by an equally "raw" column charset),
+	// avoiding a client-library crash seen when forcing a named Thai charset
+	// (e.g. "tis620") that the bundled libmysql build may not fully support.
+	if (mysql_options(temp, MYSQL_SET_CHARSET_NAME, "binary"))
+		NTL_PRINT(LOG_SYSTEM, "Could not set binary character set.\n");
 
 	if (mysql_options(temp, MYSQL_OPT_COMPRESS, &my_true))
 		NTL_PRINT(LOG_SYSTEM, "MYSQL_OPT_COMPRESS could not be set.\n");
@@ -235,6 +244,7 @@ bool MySQLDatabase::_Reconnect(MySQLDatabaseConnection * conn)
 	MYSQL * temp, *temp2;
 
 	temp = mysql_init(NULL);
+	mysql_options(temp, MYSQL_SET_CHARSET_NAME, "tis620");
 	temp2 = mysql_real_connect(temp, mHostname.c_str(), mUsername.c_str(), mPassword.c_str(), mDatabaseName.c_str(), mPort, NULL, 0);
 	if (temp2 == NULL)
 	{

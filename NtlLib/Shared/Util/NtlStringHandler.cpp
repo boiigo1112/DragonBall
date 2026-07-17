@@ -8,42 +8,32 @@ const DWORD NTL_MAX_LENGTH_OF_FORMAT_STRING_RESULT = 1024;
 
 std::wstring s2ws(const std::string& s)
 {
-#if(_MSC_VER >= 1900)
-
-	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-	return converter.from_bytes(s);
-
-#else
-
+	// This codebase stores/transmits text (e.g. character names) as bytes in
+	// the process's ANSI codepage (see Ntl_WC2MB/Ntl_MB2WC), not UTF-8.
+	// std::codecvt_utf8 throws std::range_error on any byte sequence that
+	// isn't valid UTF-8 - which non-ASCII ANSI text (e.g. Thai codepage 874)
+	// never is - silently aborting whatever callback/query was converting it.
+	// Use the ANSI-codepage-aware conversion unconditionally instead.
 	WCHAR* pTemp = Ntl_MB2WC(s.c_str());
 
-	std::wstring wstrResult = pTemp;
+	std::wstring wstrResult = pTemp ? pTemp : L"";
 
 	Ntl_CleanUpHeapStringW(pTemp);
 
 	return wstrResult;
-
-#endif
 }
 
 std::string ws2s(const std::wstring& wstr)
 {
-#if(_MSC_VER >= 1900)
-
-	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-	return converter.to_bytes(wstr);
-
-#else
-
+	// See s2ws() above: keep both directions consistent with the ANSI
+	// codepage convention used throughout the rest of the codebase.
 	char* pTemp = Ntl_WC2MB(wstr.c_str());
 
-	std::string strResult = pTemp;
+	std::string strResult = pTemp ? pTemp : "";
 
 	Ntl_CleanUpHeapString(pTemp);
 
 	return strResult;
-
-#endif
 }
 
 WCHAR* Ntl_MB2WC(const char* pszOriginalString)

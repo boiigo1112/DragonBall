@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "NewbieTable.h"
 #include "ItemTable.h"
+#include "NtlService.h"
 
 
 
@@ -167,7 +168,7 @@ void CClientSession::SendCharCreateReq(CNtlPacket * pPacket)
 			resultcode = CHARACTER_TOO_SHORT_NAME;
 		else if (charname.length() > NTL_MAX_SIZE_CHAR_NAME)
 			resultcode = CHARACTER_TOO_LONG_NAME;
-		else if (charname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+		else if (Dbo_IsValidText(req->awchCharName) == false)
 			resultcode = CHARACTER_BLOCK_STRING_INCLUDED;
 		else if (GetPlayer()->GetCharCount() > NTL_MAX_COUNT_USER_CHAR_SLOT)
 			resultcode = CHARACTER_COUNT_OVER;
@@ -474,7 +475,7 @@ void CClientSession::SendCharRenameReq(CNtlPacket * pPacket)
 		res->wResultCode = CHARACTER_TOO_SHORT_NAME;
 	else if (charname.length() > NTL_MAX_SIZE_CHAR_NAME)
 		res->wResultCode = CHARACTER_TOO_LONG_NAME;
-	else if (charname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+	else if (Dbo_IsValidText(req->awchCharName) == false)
 		res->wResultCode = CHARACTER_BLOCK_STRING_INCLUDED;
 	else
 	{

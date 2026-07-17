@@ -4,7 +4,7 @@
 //
 //	Begin		:	2008-06-12
 //
-//	Copyright	:	¨Ï NTL-Inc Co., Ltd
+//	Copyright	:	ï¿½ï¿½ NTL-Inc Co., Ltd
 //
 //	Author		:	
 //
@@ -29,8 +29,13 @@ bool Dbo_IsValidText(WCHAR* pwszText)
 
 	std::wstring wstrTest = pwszText;
 
-	if (wstrTest.find_first_not_of(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
-		return FALSE;
+	for (WCHAR wch : wstrTest)
+	{
+		bool bIsAsciiAlnum = (wch >= L'a' && wch <= L'z') || (wch >= L'A' && wch <= L'Z') || (wch >= L'0' && wch <= L'9');
+		bool bIsThai = (wch >= 0x0E00 && wch <= 0x0E7F); // Thai Unicode block
+		if (!bIsAsciiAlnum && !bIsThai)
+			return FALSE;
+	}
 
 	return TRUE;
 }
