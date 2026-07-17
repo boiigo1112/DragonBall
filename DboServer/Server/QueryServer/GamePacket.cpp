@@ -4752,20 +4752,26 @@ void CGameServerSession::RecvCharacterRenameReq(CNtlPacket * pPacket, CQueryServ
 	CPlayerCache* pCache = g_pPlayerCache->GetCharacter(req->charId);
 	if (pCache)
 	{
-		if (smart_ptr<QueryResult> namecheck = GetCharDB.Query("SELECT CharID FROM characters WHERE CharName=\"%ls\" ", req->wszCharName))
+		// %ls (vsnprintf_s) mangles non-ASCII names via the C-runtime locale;
+		// convert via the ANSI codepage first and pass as %s instead (see
+		// CCharacterManager::CreateCharacter for the full explanation).
+		char* pszNewName = Ntl_WC2MB(req->wszCharName);
+		char* pszOldName = Ntl_WC2MB(pCache->GetCharName());
+
+		if (smart_ptr<QueryResult> namecheck = GetCharDB.Query("SELECT CharID FROM characters WHERE CharName=\"%s\" ", pszNewName))
 			res->wResultCode = GAME_SAMENAME_EXIST;
 		else
 		{
 			if (pCache->RemoveItem(req->itemId))
 			{
 				GetCharDB.Execute("DELETE FROM items WHERE id=%I64u", req->itemId);
-				GetCharDB.WaitExecute("UPDATE characters SET CharName=\"%ls\" WHERE CharID=%u", req->wszCharName, req->charId); //required waitexecute so none can get the same name
-				GetCharDB.Execute("UPDATE friendlist SET friend_name=\"%ls\" WHERE friend_id=%u", req->wszCharName, req->charId);
-				GetCharDB.Execute("UPDATE auctionhouse SET Seller=\"%ls\" WHERE CharID=%u", req->wszCharName, req->charId);
-				GetCharDB.Execute("UPDATE mail SET FromName=\"%ls\" WHERE FromName=\"%ls\"", req->wszCharName, pCache->GetCharName());
-				GetCharDB.Execute("UPDATE mail SET TargetName=\"%ls\" WHERE TargetName=\"%ls\"", req->wszCharName, pCache->GetCharName());
+				GetCharDB.WaitExecute("UPDATE characters SET CharName=\"%s\" WHERE CharID=%u", pszNewName, req->charId); //required waitexecute so none can get the same name
+				GetCharDB.Execute("UPDATE friendlist SET friend_name=\"%s\" WHERE friend_id=%u", pszNewName, req->charId);
+				GetCharDB.Execute("UPDATE auctionhouse SET Seller=\"%s\" WHERE CharID=%u", pszNewName, req->charId);
+				GetCharDB.Execute("UPDATE mail SET FromName=\"%s\" WHERE FromName=\"%s\"", pszNewName, pszOldName);
+				GetCharDB.Execute("UPDATE mail SET TargetName=\"%s\" WHERE TargetName=\"%s\"", pszNewName, pszOldName);
 
-				GetLogDB.Execute("INSERT INTO change_char_name (CharID, Name, newName) VALUES(%u, \"%ls\", \"%ls\")", req->charId, pCache->GetCharName(), req->wszCharName);
+				GetLogDB.Execute("INSERT INTO change_char_name (CharID, Name, newName) VALUES(%u, \"%s\", \"%s\")", req->charId, pszOldName, pszNewName);
 
 				//if inside guild then update guild member data
 				if (pCache->GetGuildID() > 0)
@@ -4781,6 +4787,9 @@ void CGameServerSession::RecvCharacterRenameReq(CNtlPacket * pPacket, CQueryServ
 			}
 			else res->wResultCode = QUERY_FAIL;
 		}
+
+		Ntl_CleanUpHeapString(pszNewName);
+		Ntl_CleanUpHeapString(pszOldName);
 	}
 	else res->wResultCode = QUERY_FAIL;
 

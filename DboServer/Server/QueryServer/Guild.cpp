@@ -178,7 +178,14 @@ sDBO_GUILD_DATA * CGuild::CreateGuild(CHARACTERID guildMaster, WCHAR * wszName, 
 
 	m_mapGuild.insert(std::make_pair(pData->guildId, pData));
 
-	GetCharDB.WaitExecute("INSERT INTO guilds(GuildID,GuildName,GuildMaster,FunctionFlag)VALUES(%u, \"%ls\", %u, %I64u)", pData->guildId, pData->wszName, guildMaster, qwGuildFunctionFlag);
+	{
+		// %ls (vsnprintf_s) mangles non-ASCII names via the C-runtime locale;
+		// convert via the ANSI codepage first and pass as %s instead (see
+		// CCharacterManager::CreateCharacter for the full explanation).
+		char* pszGuildName = Ntl_WC2MB(pData->wszName);
+		GetCharDB.WaitExecute("INSERT INTO guilds(GuildID,GuildName,GuildMaster,FunctionFlag)VALUES(%u, \"%s\", %u, %I64u)", pData->guildId, pszGuildName, guildMaster, qwGuildFunctionFlag);
+		Ntl_CleanUpHeapString(pszGuildName);
+	}
 
 	return pData;
 }
@@ -187,7 +194,11 @@ void CGuild::AddGuildMember(GUILDID guildId, sDBO_GUILD_MEMBER_DATA * pData, WCH
 {
 	m_mapGuildMember.insert(std::make_pair(guildId, pData));
 
-	GetCharDB.Execute("UPDATE characters SET GuildID=%u, GuildName=\"%ls\" WHERE CharID=%u", guildId, wszGuildName, pData->charId);
+	{
+		char* pszGuildName = Ntl_WC2MB(wszGuildName);
+		GetCharDB.Execute("UPDATE characters SET GuildID=%u, GuildName=\"%s\" WHERE CharID=%u", guildId, pszGuildName, pData->charId);
+		Ntl_CleanUpHeapString(pszGuildName);
+	}
 	GetCharDB.Execute("INSERT INTO guild_members(GuildID,CharID)VALUES(%u,%u)", guildId, pData->charId);
 }
 

@@ -1,4 +1,5 @@
 ﻿#include "stdafx.h"
+#include "NtlService.h"
 #include "NtlPacketGU.h"
 #include "NtlPacketUG.h"
 #include "NtlPacketGM.h"
@@ -2204,7 +2205,7 @@ void	CClientSession::RecvMailSendReq(CNtlPacket * pPacket)
 		Ntl_CleanUpHeapString(chname);
 		goto _end;
 	}
-	else if (charname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+	else if (Dbo_IsValidText(req->wszTargetName) == false)
 	{
 		sendmailres = CHARACTER_BLOCK_STRING_INCLUDED;
 		Ntl_CleanUpHeapString(chname);
@@ -2874,7 +2875,7 @@ void CClientSession::RecvGuildCreateReq(CNtlPacket * pPacket)
 		result = GAME_GUILD_NEED_MORE_ZENNY_FOR_NEW_GUILD;
 	else if(cPlayer->GetLevel() < DBO_LEVEL_FOR_NEW_GUILD)
 		result = GAME_CHAR_LEVEL_FAIL;
-	else if (guildname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)	//check guild name
+	else if (Dbo_IsValidText(req->wszGuildName) == false)	//check guild name
 		result = GAME_GUILD_GUILD_NAME_HAS_INVALID_CHARACTER;
 	else if(cPlayer->GetParty() == NULL)	//check if has no party
 		result = GAME_COMMON_YOU_ARE_NOT_IN_A_PARTY;
@@ -3773,7 +3774,7 @@ void CClientSession::RecvGuildChangeNameReq(CNtlPacket * pPacket)
 
 			if (guildname.length() < NTL_MIN_SIZE_GUILD_NAME || guildname.length() > NTL_MAX_SIZE_GUILD_NAME)	//check guild name length
 				resultcode = GAME_GUILD_NOT_PROPER_GUILD_NAME_LENGTH;
-			else if (guildname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)	//check guild name
+			else if (Dbo_IsValidText(req->wszGuildName) == false)	//check guild name
 				resultcode = GAME_GUILD_GUILD_NAME_HAS_INVALID_CHARACTER;
 
 			guildname.erase();
@@ -3829,7 +3830,7 @@ void CClientSession::RecvCreatePartyReq(CNtlPacket * pPacket)
 		res->wResultCode = CHARACTER_TOO_SHORT_NAME;
 	else if (charname.length() > NTL_MAX_SIZE_PARTY_NAME)
 		res->wResultCode = CHARACTER_TOO_LONG_NAME;
-	else if (charname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+	else if (Dbo_IsValidText(req->wszPartyName) == false)
 		res->wResultCode = CHARACTER_BLOCK_STRING_INCLUDED;
 	else if (app->GetGsChannel() == DOJO_CHANNEL_INDEX)
 		res->wResultCode = GAME_FAIL;
@@ -4043,7 +4044,7 @@ void CClientSession::RecvPartyInviteCharNameReq(CNtlPacket * pPacket)
 		resultcode = CHARACTER_TOO_SHORT_NAME;
 	else if (charname.length() > NTL_MAX_SIZE_CHAR_NAME)
 		resultcode = CHARACTER_TOO_LONG_NAME;
-	else if (charname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+	else if (Dbo_IsValidText(req->wszTargetName) == false)
 		resultcode = CHARACTER_BLOCK_STRING_INCLUDED;
 
 	else if (cPlayer->GetTMQ() == NULL && cPlayer->GetTLQ() == NULL && cPlayer->GetCCBD() == NULL)
@@ -8588,7 +8589,7 @@ void CClientSession::RecvCashItemSendGiftReq(CNtlPacket * pPacket)
 		resultcode = CHARACTER_TOO_SHORT_NAME;
 	else if (charname.length() > NTL_MAX_SIZE_CHAR_NAME)
 		resultcode = CHARACTER_TOO_LONG_NAME;
-	else if (charname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+	else if (Dbo_IsValidText(req->wchName) == false)
 		resultcode = CHARACTER_BLOCK_STRING_INCLUDED;
 
 	else if (_wcsicmp(cPlayer->GetCharName(), req->wchName) != 0)
@@ -17104,7 +17105,7 @@ void CClientSession::RecvCharRenameReq(CNtlPacket * pPacket)
 			resultcode = GAME_CHARACTER_TOO_SHORT_NAME;
 		else if (charname.length() > NTL_MAX_SIZE_CHAR_NAME)
 			resultcode = GAME_CHARACTER_TOO_LONG_NAME;
-		else if (charname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+		else if (Dbo_IsValidText(req->awchCharName) == false)
 			resultcode = GAME_CHARACTER_NAME_HAS_INVALID_CHARACTER;
 		else
 		{

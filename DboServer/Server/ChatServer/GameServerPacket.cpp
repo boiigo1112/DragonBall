@@ -417,7 +417,9 @@ void	CServerPassiveSession::RecPcCreateGuild(CNtlPacket * pPacket)
 		wResultcode = GAME_PARTY_YOU_ARE_NOT_IN_PARTY;
 	else
 	{
-		smart_ptr<QueryResult> namecheck = GetCharDB.Query("SELECT GuildID FROM guilds WHERE GuildName= \"%ls\" ", req->wszGuildName);
+		char* pszGuildNameCheck = Ntl_WC2MB(req->wszGuildName);
+		smart_ptr<QueryResult> namecheck = GetCharDB.Query("SELECT GuildID FROM guilds WHERE GuildName= \"%s\" ", pszGuildNameCheck);
+		Ntl_CleanUpHeapString(pszGuildNameCheck);
 		if (namecheck)
 			wResultcode = 2107; // GAME_GUILD_SAME_GUILD_NAME_EXIST
 		else if (CParty* pParty = g_pPartyManager->GetParty(pPlayer->GetPartyID()))
@@ -787,11 +789,15 @@ void CServerPassiveSession::RecGuildChangeNameReq(CNtlPacket * pPacket)
 	CPlayer* player = g_pPlayerManager->FindPlayerWithCharID(req->charId);
 	if (player)
 	{
+		char* pszGuildNameCheck = Ntl_WC2MB(req->wszGuildName);
+		smart_ptr<QueryResult> namecheck = GetCharDB.Query("SELECT GuildID FROM guilds WHERE GuildName=\"%s\" ", pszGuildNameCheck);
+		Ntl_CleanUpHeapString(pszGuildNameCheck);
+
 		if (player->GetGuild() == NULL)
 			resultcode = GAME_GUILD_NO_GUILD_FOUND;
 		else if (!player->GetGuild()->IsGuildMaster(player->GetCharID()))
 			resultcode = COMMUNITY_GUILD_YOU_ARE_NOT_GUILD_MASTER;
-		else if(smart_ptr<QueryResult> namecheck = GetCharDB.Query("SELECT GuildID FROM guilds WHERE GuildName=\"%ls\" ", req->wszGuildName))
+		else if(namecheck)
 			resultcode = GAME_GUILD_SAME_GUILD_NAME_EXIST;
 		else
 		{
